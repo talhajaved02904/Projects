@@ -1,0 +1,252 @@
+---
+title: "Modeling and prediction for movies"
+output: 
+  html_document: 
+    fig_height: 4
+    highlight: pygments
+    theme: spacelab
+---
+
+## Setup
+
+### Load packages
+
+```{r load-packages, message = FALSE}
+library(ggplot2)
+library(dplyr)
+library(statsr)
+library(GGally)
+```
+
+### Load data
+
+Make sure your data and R Markdown files are in the same directory. When loaded
+your data file will be called `movies`. Delete this note when before you submit 
+your work. 
+
+```{r load-data}
+load("movies.Rdata")
+```
+
+
+
+* * *
+
+## Part 1: Data
+The data is comes from a random sample of the movies. No random sampling was done for the collection of the data. As the data is an observational study, we cannot extract the causal relationships from the data
+
+* * *
+
+## Part 2: Research question
+Does there exists a relation between the imdb rating of the movie and its MPAA rating(G, PG-13 etc). This question can be very beneficial for the movie maker as it is going to help them to choose which type of movie they should make in order to have highest chance of score a great imdb rating.
+
+
+* * *
+
+## Part 3: Exploratory data analysis
+
+
+### Checking the variables in the dataset
+```{r}
+str(movies)
+```
+
+### Checking the distribution of the IMDB Rating
+```{r}
+ggplot(data=movies, aes(x=imdb_rating)) +
+  geom_histogram()
+```
+
+We can see that the imdb rating are left skewed. It is evident from the graph that most of the movies are likely to get higher ratings.
+
+```{r}
+summary(movies$imdb_rating)
+```
+It is also evident from the summary that the imdb rating of the movies are left skewed
+
+### Checking the distribution of the MPAA rating
+```{r}
+ggplot(data=movies, aes(x=mpaa_rating)) +
+  stat_count()
+```
+Here we can see that most of the movies in our dataset are R rated.
+
+```{r}
+summary(movies$mpaa_rating)
+```
+From the summary, we can see that the number of R rated movies are 329 which is far greater than other types of movies.
+
+### Relationship between MPAA Rating and IMDB Rating
+
+```{r}
+ggplot(data=movies, aes(x=mpaa_rating, y=imdb_rating))+
+  geom_jitter()+
+  geom_smooth(method = "lm", se= FALSE)
+
+```
+
+```{r}
+lm_t <- lm(imdb_rating ~ mpaa_rating, data=movies)
+summary(lm_t)
+```
+
+The summary here suggests that imdb_rating is affected by mpaa_rating.
+
+* * *
+
+## Part 4: Modeling
+
+### Removing Un-necessary variables
+
+```{r}
+movies <- select(movies, -imdb_url, -rt_url, -title)
+```
+Here, I have removed some variables which can have no effect on our data such as url, name of movie
+
+### The variables to be used for prediction
+As the data consists of a lot of variables, I will be using only some of them to make a model for the prediction
+
+#### Response Variable
+-> IMDB rating
+
+#### Explanatory variable
+-> MPAA rating
+-> Best actor win
+-> Best pic win
+-> Thtr rel month
+-> Title type
+-> Runtime
+
+### Model Selection
+For this purpose, I will be using p-value backward selection as it helps to find significant predictors and require fitting fewer models
+
+### Checking the effect of explanaory variables on response variables
+```{r}
+mul_model <- lm(imdb_rating ~ mpaa_rating + best_actor_win + best_pic_win + thtr_rel_month + title_type + runtime, data = movies)
+summary(mul_model)
+```
+
+As here, the thtr_rel_month has high p-value, we will drop it and then again check the relationship of the variables
+
+```{r}
+mul_model <- lm(imdb_rating ~ mpaa_rating + best_actor_win + best_pic_win + title_type + runtime, data = movies)
+summary(mul_model)
+```
+
+Best actors win has a high p-value, so we will discard it
+
+```{r}
+mul_model <- lm(imdb_rating ~ mpaa_rating + best_pic_win + title_type + runtime, data = movies)
+summary(mul_model)
+```
+We cannot discard mpaa_rating because one of the category has low p-value
+
+### Model Diagnostics
+For the model to work correctly, There are certain conditions to be met
+
+#### Nearly normal residuals with mean 0
+```{r}
+ggplot(data = mul_model, aes(x = mul_model$residuals)) + 
+  geom_histogram(color = 'darkgray', fill = 'darkblue')  + 
+  labs(x = "residuals", title = "Distribution of Residuals from LRM" )
+
+```
+
+```{r}
+qqnorm(mul_model$residuals, col = 'darkblue') 
+qqline(mul_model$residuals, col = 'red')
+
+```
+
+Here We can see a strong skew of the residuals on the line
+
+```{r}
+summary(mul_model$residuals)
+```
+
+Here we can see that the residuals have a mean of zero
+
+#### Variability of residuals
+```{r}
+plot(mul_model$residuals ~ mul_model$fitted, 
+     main = 'Plot of Residuals vs Model Prediction from MLR Model', 
+     xlab = 'prediction', 
+     ylab = 'residuals', 
+     col = 'darkblue')
+
+```
+
+It is clear from the plot that the variability of residuals is not constant. This means that our prediction will be affected by not meeting this condition
+
+#### Independence of residuals
+
+```{r}
+plot(mul_model$residuals, 
+     main = 'Plot of Residuals for MLR Model', 
+     xlab = 'index', 
+     ylab = 'residuals', 
+     col = 'darkblue') 
+```
+
+The residuals seem to be randomly distributed.
+
+### Interpretation of model co-efficients
+```{r}
+mul_model <- lm(imdb_rating ~ mpaa_rating + best_pic_win + title_type + runtime, data = movies)
+summary(mul_model)
+```
+
+#### MPAA_Rating NC-17:
+For every movie with NC-17, we should expect imdb rating to increase by 0.04
+
+#### MPAA_Rating PG:
+For every movie with PG, we should expect imdb rating to decrease by 0.45
+
+#### MPAA_Rating PG-13:
+For every movie with PG-13, we should expect imdb rating to decrease by 0.69
+
+#### MPAA_Rating R:
+For every movie with R, we should expect imdb rating to devrease by by 0.2
+
+#### MPAA_Rating Unrated:
+For every movie with Unrated, we should expect imdb rating to decrease by 0.12
+
+#### Best Pic Win:
+For every movie with best pic win, we should expect imdb rating to increase by 0.87
+
+#### Title type film :
+For every movie with title type film, we should expect imdb rating to decrease by 1.2
+
+#### Title type TV moive:
+For every movie with title type TV moive, we should expect imdb rating to decrease by 1.7
+
+#### Runtime:
+For 1 minute increase in runtime, We expect the movie rating to increase by 0.01
+
+
+* * *
+
+## Part 5: Prediction
+I will be predicting the rating of the movie Deadpool. 
+data ref: https://www.imdb.com/title/tt1431045/?ref_=nv_sr_2?ref_=nv_sr_2
+
+```{r}
+pred_dead = data.frame(genre = 'Science Fiction & Fantasy' , 
+                     mpaa_rating = 'R', 
+                     best_pic_win = 'no', 
+                     title_type = 'Feature Film',
+                     runtime = 108, 
+                     stringsAsFactors=FALSE)
+
+predict(mul_model, 
+        pred_dead, 
+        interval = "prediction", 
+        level = 0.95)
+```
+According to our prediction, Deadpool has 95% chance of rating between 4.6 and 8.3. So this prediction is true. Deadpool's imdb rating is 8
+
+* * *
+
+## Part 6: Conclusion
+
+The data set provided has a very few number of movies. The number of this data should be increases to increase the prediction accuracy of the model. Moreover, the data I have been used is somewhat left skewed and does not have a constant variability that will result in affecting the accuracy of the model. Future research, and improvements to the model, could stem from learning how to transform the data appropriately so that the non-constancy of the data is negated in the model.

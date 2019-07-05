@@ -1,0 +1,168 @@
+---
+title: "Statistical inference with the GSS data"
+output: 
+  html_document: 
+    fig_height: 4
+    highlight: pygments
+    theme: spacelab
+---
+
+## Setup
+
+### Load packages
+
+```{r load-packages, message = FALSE}
+library(ggplot2)
+library(dplyr)
+library(statsr)
+```
+
+### Load data
+
+Make sure your data and R Markdown files are in the same directory. When loaded
+your data file will be called `gss`. Delete this note when before you submit 
+your work. 
+
+```{r load-data}
+load("gss.Rdata")
+```
+
+
+
+* * *
+
+## Part 1: Data
+The General Social Survey (GSS) is a sociological survey created and regularly collected since 1972 by the National Opinion Research Center at the University of Chicago. It is funded by the National Science Foundation. The GSS collects information and keeps a historical record of the concerns, experiences, attitudes, and practices of residents of the United States.
+
+Since 1972, the GSS has been monitoring societal change and studying the growing complexity of American society. It is one of the most influential studies in the social sciences, and is frequently referenced in leading publications, including The New York Times, The Wall Street Journal, and the Associated Press.
+
+The GSS aims to gather data on contemporary American society in order to monitor and explain trends and constants in attitudes, behaviors, and attributes; to examine the structure and functioning of society in general as well as the role played by relevant subgroups; to compare the United States to other societies in order to place American society in comparative perspective and develop cross-national models of human society; and to make high-quality data easily accessible to scholars, students, policy makers, and others, with minimal cost and waiting.
+
+The data collected about this survey includes both demographic information and respondents' opinions on matters ranging from government spending to the state of race relations to the existence and nature of God. Because of the wide range of topics covered, and the comprehensive gathering of demographic information, survey results allow social scientists to correlate demographic factors like age, race, gender, and urban/rural upbringing with beliefs, and thereby determine whether, for example, an average middle-aged black male respondent would be more or less likely to move to a different U.S. state for economic reasons than a similarly situated white female respondent; or whether a highly educated person with a rural upbringing is more likely to believe in a transcendent God than a person with an urban upbringing and only a high-school education.
+
+GSS results are freely made available to interested parties over the internet, and are widely used in sociological research. The data are generally available in formats designed for statistical programs (e.g., R/SAS/SPSS/Stata), and the GSS Data Explorer allows users to search GSS information, test hypotheses, and look for interesting correlations directly on the website.
+
+The target population of the GSS is adults (18+) living in households in the United States. The GSS sample is drawn using an area probability design that randomly selects respondents in households across the United States to take part in the survey. Respondents that become part of the GSS sample are from a mix of urban, suburban, and rural geographic areas. Participation in the study is strictly voluntary. However, because only about a few thousand respondents are interviewed in the main study, every respondent selected is very important to the results.
+
+The survey is conducted face-to-face with an in-person interview by NORC at the University of Chicago. The survey was conducted every year from 1972 to 1994 (except in 1979, 1981, and 1992). Since 1994, it has been conducted every other year. The survey takes about 90 minutes to administer. As of 2014, 30 national samples with 59,599 respondents and 5,900+ variables have been collected.
+
+(Source:https://en.wikipedia.org/wiki/General_Social_Survey)
+
+The collected data only represents the 18+ population of the country. The sample data which was drawn using probability design selected respondents randomly, we can say that this survey is generalizable to the 18+ people of the whole country. However, this generazibility can be affected by the response rate of the people each year which is roughly 75% each year.
+
+Although the data was collected randomly, but on the basis of this data we cannot define the causal relationship between the entities. The reason being the data collected wasnt in a controlled environment rather a random approach for the data collection was used.
+* * *
+
+## Part 2: Research question
+
+Trust is an important factor for the smooth running of the country. Strength of the nation can be dependent on people's confidence in the supreme court of the country. I will try to find whether the proportion of the people who have great deal of confidence in supreme court of the United States have remained the same or increased from 1973 till 2012.
+
+* * *
+
+## Part 3: Exploratory data analysis
+
+###Looking at the variables of the data
+```{r}
+str(gss)
+```
+
+### Extracting Needed Information 
+```{r}
+gss_new <- gss %>%
+  select(year,Confidence = conjudge) %>%
+  filter(year == 1973 | year == 2012) %>%
+  mutate(Confidence = ifelse(Confidence == "Hardly Any", "No", "Yes")) %>%
+  filter(!is.na(Confidence))
+```
+
+I have made a variable Confidence where "No" means that people any hardly confidence in the Supreme Court and "Yes" implies they have some or great deal of confidence in the court
+
+### 1973 Information
+```{r}
+gss_1973 <- gss %>%
+  select(year,Confidence = conjudge) %>%
+  filter(year == 1973) %>%
+  mutate(Confidence = ifelse(Confidence == "Hardly Any", "No", "Yes")) %>%
+  filter(!is.na(Confidence))
+```
+
+### 2012 Information
+```{r}
+gss_2012 <- gss %>%
+  select(year,Confidence = conjudge) %>%
+  filter(year == 2012) %>%
+  mutate(Confidence = ifelse(Confidence == "Hardly Any", "No", "Yes")) %>%
+  filter(!is.na(Confidence))
+```
+
+
+### Visualizing the Confidence in 1973
+```{r}
+ggplot(data = gss_1973, aes(x = Confidence))+
+  stat_count(width = 0.5) +
+  ggtitle("People's Confidence in Supreme Court in 1973") +
+  xlab("Confience in Court") +
+  ylab("Population") 
+  
+```
+
+Here, we can see that a fair portion of the people have somewhat confidence in the US courts
+
+### Statistics of 1973
+```{r}
+gss_1973 %>%
+  group_by(Confidence) %>%
+  summarise(Percetage = 100 * n()/nrow(gss_1973))
+```
+
+Here from the statistics table, We can see that approximately 84% of people have confidence and 16% dont have the confidence in the supreme court
+
+### Visualizing the Confidence in 2012
+```{r}
+ggplot(data = gss_2012, aes(x = Confidence))+
+  stat_count(width = 0.5) +
+  ggtitle("People's Confidence in Supreme Court in 1973") +
+  xlab("Confience in Court") +
+  ylab("Population") 
+  
+```
+Here, we can see that a fair portion of the people have somewhat confidence in the US courts
+
+### Statistics of 1973
+```{r}
+gss_2012 %>%
+  group_by(Confidence) %>%
+  summarise(Percetage = 100 * n()/nrow(gss_2012))
+```
+Here from the statistics table, We can see that approximately 84.2% of people have confidence and 16.8% dont have the confidence in the supreme court
+
+* * *
+
+## Part 4: Inference
+
+### Hypothesis
+$H_0 =$ Propotion of the people who have confidence in the supreme court of US remains the same between 1973 and 2012
+
+$H_A =$ Propotion of the people who have confidence in the supreme court of US does remain the same between 1973 and 2012
+
+### Condition
+As we are trying to find inference between proportions of two categorial variables, So for this scenario two conditions must be met
+1. Independence condition
+2. Sample/Skew condition
+
+For Independence, as the data collected is through random sample, we can consider the two variables independent of each other
+For Sample condition, as here both $np >= 10$ and $n(1-p) >= 10$, we can consider ourselves good to go
+
+### Method
+As we have somewhat large data, we can take the theoratical method to find the inference
+
+### Inference
+```{r}
+inference(y=(gss_new$Confidence),x = as.factor(gss_new$year), data = gss_new, type = "ht", statistic = "proportion", null = 0, alternative = "two sided", method  =  "theoretical" , success = "No")
+```
+
+### Conclusion
+As p-value is very large, we fail to reject the null hypothesis which is propotion of the people who have confidence in the supreme court of US remains the same between 1973 and 2012
+
+### Reasons for not using CI
+CI is used to find the means of the total population with some confidence. Here we were not interested with the mean rather with the proportion, so hypothesis testing was an easier choice for me which gave me a straightforward answer
