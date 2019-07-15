@@ -34,22 +34,22 @@ Failed Captioning
 --------------------------
 **Not Even Close** 
 
-![](./Failed%20Caption/Car.PNG?raw=true "Title")
+![](./Fail%20Caption/Car.PNG?raw=true "Title")
 
-**Wow, the algorithms is predicting the future. Heisenberg wears a hat** :laughing:
+**Wow, the algorithm is predicting the future. Heisenberg wears a hat** :laughing:
 
-![](./Failed%20Caption/Heiseinberg.PNG?raw=true "Title")
+![](./Fail%20Caption/Heiseinberg.PNG?raw=true "Title")
 
 **Not justice to the peaky blinders**
 
-![](./Failed%20Caption/Peaky%20Blinders.PNG?raw=true "Title")
+![](./Fail%20Caption/Peaky%20Blinders.PNG?raw=true "Title")
 
 **What's going on rick??**
 
-![](./Failed%20Caption/Rick%20and%20Morty.PNG?raw=true "Title")
+![](./Fail%20Caption/Rick%20and%20Morty.PNG?raw=true "Title")
 
 **Totally nailed it**
 
-![](./Failed%20Caption/Singing.PNG?raw=true "Title")
+![](./Fail%20Caption/Singing.PNG?raw=true "Title")
 
 
