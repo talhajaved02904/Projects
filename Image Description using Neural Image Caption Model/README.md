@@ -16,40 +16,40 @@ Good Captioning
 
 ![](Good%20Caption/Airplane.PNG?raw=true "Title")
 
-![Alt text](./Good Caption/Baseball.PNG?raw=true "Title")
+![](./Good%20Caption/Baseball.PNG?raw=true "Title")
 
-![Alt text](./Good Caption/Bike.png?raw=true "Title")
+![Alt text](./Good%20Caption/Bike.png?raw=true "Title")
 
-![Alt text](./Good Caption/Skate.png?raw=true "Title")
+![Alt text](./Good%20Caption/Skate.png?raw=true "Title")
 
-![Alt text](./Good Caption/Skii.png?raw=true "Title")
+![Alt text](./Good%20Caption/Skii.png?raw=true "Title")
 
-![Alt text](./Good Caption/Sleeping.png?raw=true "Title")
+![Alt text](./Good%20Caption/Sleeping.png?raw=true "Title")
 
-![Alt text](./Good Caption/Surf.png?raw=true "Title")
+![Alt text](./Good%20Caption/Surf.png?raw=true "Title")
 
-![Alt text](./Good Caption/Veges.png?raw=true "Title")
+![Alt text](./Good%20Caption/Veges.png?raw=true "Title")
 
 Failed Captioning
 --------------------------
 **Not Even Close** 
 
-![Alt text](./Failed Caption/Car.png?raw=true "Title")
+![Alt text](./Failed%20Caption/Car.png?raw=true "Title")
 
 **Wow, the algorithms is predicting the future. Heisenberg wears a hat** :laughing:
 
-![Alt text](./Failed Caption/Heiseinberg.png?raw=true "Title")
+![Alt text](./Failed%20Caption/Heiseinberg.png?raw=true "Title")
 
 **Not justice to the peaky blinders**
 
-![Alt text](./Failed Caption/Peaky Blinders.png?raw=true "Title")
+![Alt text](./Failed%20Caption/Peaky%20Blinders.png?raw=true "Title")
 
 **What's going on rick??**
 
-![Alt text](./Failed Caption/Rick and Morty.png?raw=true "Title")
+![Alt text](./Failed%20Caption/Rick%20and%20Morty.png?raw=true "Title")
 
 **Totally nailed it**
 
-![Alt text](./Failed Caption/Singing.png?raw=true "Title")
+![Alt text](./Failed%20Caption/Singing.png?raw=true "Title")
 
 
