@@ -14,7 +14,7 @@ Results
 Good Captioning
 -----------------------
 
-![Alt text](/Good Caption/Airplane.PNG?raw=true "Title")
+![](Good%20Caption/Airplane.PNG?raw=true "Title")
 
 ![Alt text](./Good Caption/Baseball.PNG?raw=true "Title")
 
