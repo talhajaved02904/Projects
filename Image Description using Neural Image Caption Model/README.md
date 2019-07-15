@@ -6,7 +6,7 @@ This idea comes from recent advances in machine translation between languages, w
 Now, what if we replaced that first RNN and its input words with a deep Convolutional Neural Network (CNN) trained to classify objects in images? Normally, the CNN’s last layer is used in a final Softmax among known classes of objects, assigning a probability that each object might be in the image. But if we remove that final layer, we can instead feed the CNN’s rich encoding of the image into a RNN designed to produce phrases. We can then train the whole system directly on images and their captions, so it maximizes the likelihood that descriptions it produces best match the training descriptions for each image.
 
 ![Alt text](./Description.png?raw=true "Title")
-(Sourece: https://ai.googleblog.com/2014/11/a-picture-is-worth-thousand-coherent.html)
+(Source: https://ai.googleblog.com/2014/11/a-picture-is-worth-thousand-coherent.html)
 
 Results
 ------------
@@ -14,9 +14,9 @@ Results
 Good Captioning
 -----------------------
 
-![Alt text](./Good Caption/Airplane.png?raw=true "Title")
+![Alt text](/Good Caption/Airplane.PNG?raw=true "Title")
 
-![Alt text](./Good Caption/Baseball.png?raw=true "Title")
+![Alt text](./Good Caption/Baseball.PNG?raw=true "Title")
 
 ![Alt text](./Good Caption/Bike.png?raw=true "Title")
 
